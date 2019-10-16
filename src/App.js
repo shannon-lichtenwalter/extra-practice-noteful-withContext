@@ -7,6 +7,7 @@ import DynamicFolder from './Components/DynamicFolder';
 import NoteContent from './Components/NoteContent';
 import NoteSidebar from './Components/NoteSidebar';
 import {Route, Switch, Link} from 'react-router-dom';
+import NotefulContext from './NotefulContext';
 
 class App extends React.Component {
 
@@ -75,20 +76,25 @@ class App extends React.Component {
   render() {
     
     return(
+      <NotefulContext.Provider value = {{
+        folder: this.state.currentNote.folder,
+        folders: this.state.folders,
+        folderClicked: this.folderClicked, 
+        counter: this.state.counter,
+        currentFolder:this.state.currentFolder,
+        noteClicked:this.noteClicked,
+        notes:this.state.notes,
+      }}>
       <div className='app-div'>
         <Switch>
           <Route 
             path='/note'
-            render={() => (
-              <NoteSidebar folder={this.state.currentNote.folder} />
-            )}
+            component={NoteSidebar}
           />
 
           <Route 
             path='/'
-            render={() => (
-              <SideBar folders={this.state.folders} folderClicked={this.folderClicked} counter={this.state.counter} currentFolder={this.state.currentFolder}/>
-            )}
+            component={SideBar}
           />
 
         </Switch>
@@ -139,6 +145,7 @@ class App extends React.Component {
 
         </div>
       </div>
+      </NotefulContext.Provider>
     );
   }
 }

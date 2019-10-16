@@ -1,5 +1,6 @@
 import React from 'react';
 import Note from './Note';
+import NotefulContext from '../NotefulContext'
 
 export default function NoteSection(props) {
     let newArray = props.notes.map(note => {

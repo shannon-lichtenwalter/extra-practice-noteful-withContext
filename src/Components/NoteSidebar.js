@@ -1,16 +1,22 @@
 import React from 'react';
 import './NoteSidebar.css';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import NotefulContext from '../NotefulContext';
 
-function NoteSidebar(props) {
-  return (
-    <div className="note-sidebar">
-      <button className="backButton" onClick={() => props.history.goBack()}>
-        Back
+class NoteSidebar extends React.Component {
+  static contextType = NotefulContext;
+
+  render() {
+    return (
+      <div className="note-sidebar">
+        <button className="backButton" onClick={() => this.props.history.goBack()}>
+          Back
       </button>
-      <h2 className="verticalText">{props.folder}</h2>
-    </div>
-  )
+        <h2 className="verticalText">{this.context.folder}</h2>
+      </div>
+    )
+  }
+
 }
 
 export default withRouter(NoteSidebar);

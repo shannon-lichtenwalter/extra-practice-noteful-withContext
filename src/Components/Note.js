@@ -1,18 +1,25 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import NotefulContext from '../NotefulContext';
 
-export default function (props) {
-  let date = new Date(props.note.modified);
-  return (
-    <Link to={`/note/${props.note.id}`}>
-        <div onClick={()=> props.noteClicked(props.note.id)} className ='note-div'>
-            <h2>{props.note.name}</h2>
-            {date.toDateString()}
+class Note extends React.Component {
+  static contextType = NotefulContext;
+  render() {
+    let date = new Date(this.props.note.modified);
+    return (
+      <Link to={`/note/${this.props.note.id}`}>
+        <div onClick={() => this.context.noteClicked(this.props.note.id)} className='note-div'>
+          <h2>{this.props.note.name}</h2>
+          {date.toDateString()}
         </div>
         <button className='remove-button'>
-            Remove
+          Remove
         </button>
-    </Link>
-  )
+      </Link>
+    )
+  }
+
 
 }
+
+export default Note;

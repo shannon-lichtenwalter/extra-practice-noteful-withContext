@@ -1,19 +1,33 @@
 import React from 'react';
 import Note from './Note';
 import './NoteContent.css'
+import NotefulContext from '../NotefulContext';
 
-export default function(props) {
-  let newArray= props.currentNote.note.content.split('\n \r');
-  let paragraphs = newArray.map((content, index) => {
-    return <p key={index}>{content}</p>
-  })
+class NoteContent extends React.Component {
+  static contextType = NotefulContext; 
+  
+  componentDidMount(){
+    if (this.context.currentNote.note.content === undefined) {
+      this.context.noteClicked(this.props.match.params.noteId);
+    }
+  }
+  
+  render() {
+    const { currentNote } = this.context;
+    let newArray = !currentNote.note.content ? null : currentNote.note.content.split('\n \r');
+    let paragraphs = !currentNote.note.content ? null : newArray.map((content, index) => {
+      return <p key={index}>{content}</p>
+    })
 
-  return(
-    <div className ='note-content'>
-      <div className='noteLink'>
-        <Note noteClicked= {props.noteClicked} note={props.currentNote.note}/>
+    return (
+      <div className='note-content'>
+        <div className='noteLink'>
+          <Note note={currentNote.note} />
+        </div>
+        {paragraphs}
       </div>
-      {paragraphs}
-    </div>
-  )
+    )
+  }
 }
+
+export default NoteContent;

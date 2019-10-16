@@ -6,13 +6,13 @@ import SideBar from './Components/SideBar'
 import DynamicFolder from './Components/DynamicFolder';
 import NoteContent from './Components/NoteContent';
 import NoteSidebar from './Components/NoteSidebar';
-import {Route, Switch, Link} from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import NotefulContext from './NotefulContext';
 
 class App extends React.Component {
 
   state = {
-    currentNote:{
+    currentNote: {
       note: {},
       folder: ''
     },
@@ -24,13 +24,13 @@ class App extends React.Component {
 
   resetFolder() {
     this.setState({
-      currentFolder:null
+      currentFolder: null
     })
   }
 
   folderClicked = (id) => {
     this.setState({
-      currentFolder:id,
+      currentFolder: id,
     })
   }
 
@@ -45,60 +45,61 @@ class App extends React.Component {
     })
   }
 
-  folderCounter = () => {
-    let newArray = this.state.folders.map(folder => {
-      let counter = 0;
-      this.state.notes.map(note => {
-        if(note.folderId === folder.id) {
+folderCounter = () => {
+  let newArray = this.state.folders.map(folder => {
+    let counter = 0;
+    this.state.notes.map(note => {
+      if (note.folderId === folder.id) {
         counter++;
       } return null;
-      })
-      return {
-        [folder.id]:counter
-      };
     })
+    return {
+      [folder.id]: counter
+    };
+  })
 
-    let result = newArray.reduce((result, item) => {
-      let key = Object.keys(item);
-      result[key] = item[key];
-      return result;
-    }, {});
+  let result = newArray.reduce((result, item) => {
+    let key = Object.keys(item);
+    result[key] = item[key];
+    return result;
+  }, {});
 
-    this.setState({
-      counter : result
-    });
-  }
+  this.setState({
+    counter: result
+  });
+}
 
-  componentDidMount() {
-    this.folderCounter();
-  }
+componentDidMount() {
+  this.folderCounter();
+}
 
-  render() {
-    
-    return(
-      <NotefulContext.Provider value = {{
-        folder: this.state.currentNote.folder,
-        folders: this.state.folders,
-        folderClicked: this.folderClicked, 
-        counter: this.state.counter,
-        currentFolder:this.state.currentFolder,
-        noteClicked:this.noteClicked,
-        notes:this.state.notes,
-      }}>
+render() {
+  return (
+    <NotefulContext.Provider value={{
+      folder: this.state.currentNote.folder,
+      folders: this.state.folders,
+      folderClicked: this.folderClicked,
+      counter: this.state.counter,
+      currentFolder: this.state.currentFolder,
+      noteClicked: this.noteClicked,
+      notes: this.state.notes,
+      currentNote: this.state.currentNote,
+      exactNote: this.state.currentNote.note,
+    }}>
       <div className='app-div'>
         <Switch>
-          <Route 
+          <Route
             path='/note'
             component={NoteSidebar}
           />
 
-          <Route 
+          <Route
             path='/'
             component={SideBar}
           />
 
         </Switch>
-        
+
         <div className='app-second-div'>
           <header>
             <Link to="/" onClick={() => this.resetFolder()}>
@@ -106,48 +107,33 @@ class App extends React.Component {
             </Link>
           </header>
 
-          <Route 
-            exact 
-            path='/' 
-            render={() => (
-              <HomePage 
-                noteClicked={this.noteClicked} 
-                folders={this.state.folders} 
-                notes={this.state.notes} 
-              />  
-            )} 
+          <Route
+            exact
+            path='/'
+            component={HomePage}
           />
+          )}
+        />
 
-          <Route 
-            path='/folder/:folderId' 
-            render={({match, history, location}) => (
-              <DynamicFolder 
-                match={match}
-                history={history}
-                location={location}
-                folderClicked={this.folderClicked}
-                noteClicked= {this.noteClicked} 
-                notes = {this.state.notes}
-                currentFolder={this.state.currentFolder}
-              />
-            )} 
+          <Route
+            path='/folder/:folderId'
+            component={DynamicFolder}
           />
+          )}
+        />
 
-          <Route 
-            path='/note/:noteId' 
-            render={() => (
-              <NoteContent 
-                noteClicked ={this.noteClicked} 
-                currentNote={this.state.currentNote}
-              />
-            )} 
+          <Route
+            path='/note/:noteId'
+            component={NoteContent}
           />
+          )}
+        />
 
         </div>
       </div>
-      </NotefulContext.Provider>
-    );
-  }
+    </NotefulContext.Provider>
+  );
+}
 }
 
 export default App;

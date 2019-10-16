@@ -1,18 +1,22 @@
 import React from 'react';
 import Note from './Note';
-import NotefulContext from '../NotefulContext'
 
-export default function NoteSection(props) {
-    let newArray = props.notes.map(note => {
+class NoteSection extends React.Component {
+    render() {
+        let newArray = this.props.notes.map(note => {
+            return (
+                <li key={note.id} className="noteList">
+                    <Note note={note} />
+                </li>
+            );
+        })
         return (
-            <li key={note.id} className="noteList">
-                <Note noteClicked={props.noteClicked} note={note}/>
-            </li>
+            <ul>
+                {newArray}
+            </ul>
         );
-    })
-    return (
-        <ul>
-            {newArray}
-        </ul>
-    );
+    }
+
 }
+
+export default NoteSection;

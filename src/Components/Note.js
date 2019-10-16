@@ -1,25 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import NotefulContext from '../NotefulContext';
+
 
 class Note extends React.Component {
   static contextType = NotefulContext;
   render() {
     let date = new Date(this.props.note.modified);
     return (
-      <Link to={`/note/${this.props.note.id}`}>
+      <div>
         <div onClick={() => this.context.noteClicked(this.props.note.id)} className='note-div'>
-          <h2>{this.props.note.name}</h2>
+          <Link to={`/note/${this.props.note.id}`}><h2>{this.props.note.name}</h2> </Link>
           {date.toDateString()}
         </div>
-        <button className='remove-button'>
+        <button className='remove-button'
+          onClick={() => this.context.deleteClicked(this.props.note.id)}
+        >
           Remove
         </button>
-      </Link>
+      </div>
     )
   }
 
 
 }
 
-export default Note;
+export default withRouter(Note);

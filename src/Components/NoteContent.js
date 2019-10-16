@@ -8,8 +8,10 @@ class NoteContent extends React.Component {
   
   componentDidMount(){
     if (this.context.currentNote.note.content === undefined) {
-      this.context.noteClicked(this.props.match.params.noteId);
-    }
+      setTimeout(() => {
+        this.context.noteClicked(this.props.match.params.noteId)
+      }, 100)
+      }
   }
   
   render() {
